@@ -15,10 +15,28 @@ const Items = require("./models/items");
 const Lottery = require("./models/lottery");
 const Tickets = require("./models/tickets");
 const order = require("./models/order");
+const cookieSession = require("cookie-session");
+
+const passport_setup = require("./auth/passport_setup");
+const facebook_auth = require("./auth/facebook_auth");
+
+const session = require("express-session");
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
+
+// keys stores the keys used to encrypt cookies
+app.use(
+  session({
+    secret: [process.env.COOKIE_KEY],
+    secure: true, // must be true if sameSite='none',
+    resave: true,
+    cookie: { secure: true },
+  })
+);
+
+app.use("/facebook_auth", facebook_auth);
 
 let mongoDB = `mongodb+srv://anaum:${process.env.MONGOPW}@cluster0.5newcfu.mongodb.net/?retryWrites=true&w=majority`;
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });

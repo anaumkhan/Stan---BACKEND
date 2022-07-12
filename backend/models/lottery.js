@@ -9,7 +9,7 @@ let lotterySchema = new Schema({
   is_active: Boolean,
   winner_user_id: String,
   ticket_list: [String],
-  tickets: [Array],
+  tickets: [String],
 });
 
 let Lottery = mongoose.model("lottery", lotterySchema);

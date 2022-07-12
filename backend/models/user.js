@@ -6,6 +6,7 @@ let userSchema = new Schema({
   name: String,
   email: String,
   instagram_user_id: String,
+  facebook_user_id: String,
 });
 
 let User = mongoose.model("Users", userSchema);
