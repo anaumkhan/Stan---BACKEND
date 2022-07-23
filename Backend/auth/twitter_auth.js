@@ -1,16 +1,17 @@
 const express = require("express");
 const axios = require("axios");
-const FacebookStrategy = require("passport-twitter").Strategy;
+const TwitterStrategy = require("passport-twitter").Strategy;
 const passport = require("passport");
 var router = express.Router();
 const dev_url = "http://localhost:3000/";
 
 passport.use(
-  new InstagramStrategy(
+  new TwitterStrategy(
     {
-      clientID: process.env.APPID,
-      clientSecret: process.env.SECRET,
+      consumerKey: process.env.TWITTERKEY,
+      consumerSecret: process.env.TWITTERSECRET,
       callbackURL: "/twitter_auth/auth/twitter/callback",
+      scope: "read",
     },
     async function (accessToken, refreshToken, profile, done) {
       var user = { ...profile, _id: profile.id };
@@ -20,10 +21,6 @@ passport.use(
     }
   )
 );
-
-router.get("/", (req, res) => {
-  return "";
-});
 
 router.get(
   "/auth/twitter",
@@ -41,5 +38,18 @@ router.get(
     res.send();
   }
 );
+
+router.get("/twitter_likes", async function (req, res) {
+  console.log(process.env.TWITTERTOKEN);
+  const config = {
+    headers: { Authorization: `Bearer ${process.env.TWITTERTOKEN}` },
+  };
+  const results = await axios.get(
+    "https://api.twitter.com/2/tweets/1549661219224576000/liking_users?max_results=10",
+    config
+  );
+  console.log(results.data);
+  res.send(results.data);
+});
 
 module.exports = router;

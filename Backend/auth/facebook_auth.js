@@ -24,10 +24,6 @@ passport.use(
   )
 );
 
-router.get("/", (req, res) => {
-  return "";
-});
-
 router.get(
   "/auth/facebook",
   passport.authenticate("facebook", { forceVerify: true })

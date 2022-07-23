@@ -1,6 +1,6 @@
 const express = require("express");
 const axios = require("axios");
-const FacebookStrategy = require("passport-instagram").Strategy;
+const InstagramStrategy = require("passport-instagram").Strategy;
 const passport = require("passport");
 var router = express.Router();
 const dev_url = "http://localhost:3000/";
@@ -8,8 +8,8 @@ const dev_url = "http://localhost:3000/";
 passport.use(
   new InstagramStrategy(
     {
-      clientID: process.env.APPID,
-      clientSecret: process.env.SECRET,
+      clientID: process.env.IGAPPID,
+      clientSecret: process.env.IGSECRET,
       callbackURL: "/instagram_auth/auth/instagram/callback",
     },
     async function (accessToken, refreshToken, profile, done) {
@@ -20,10 +20,6 @@ passport.use(
     }
   )
 );
-
-router.get("/", (req, res) => {
-  return "";
-});
 
 router.get(
   "/auth/instagram",
